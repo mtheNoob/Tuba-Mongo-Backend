@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+app.options("*", cors());
 
 dotenv.config();
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const CabB = require('../models/cabModel');
+const cors = require("cors");
 const sendEmail = require('../config/mailer'); // Import the mailer
 
 module.exports = function (app) {

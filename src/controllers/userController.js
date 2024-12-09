@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
+const cors = require("cors");
 
 const saltRounds = 10;
 
