@@ -70,8 +70,12 @@ module.exports = function (app) {
 
             await sendEmail(email, userSubject, userText); // Email to the user
             await sendEmail(process.env.OWNER_MAIL, ownerSubject, ownerText); // Email to the owner
-            const smsMessage = `New cab booking received:\nReference Number: ${referenceNo}\nName: ${name}\nContact No: ${contact_no}\nPickup: ${pickupAddress}\nDrop: ${dropAddress}`;
-            await sendSMS(process.env.OWNER_PHONE, smsMessage); // Send SMS to owner's phone number
+            const ownerPhone = "8948626497"; // Replace with the owner's phone number
+            const message = `New Cab Booking:\nName: ${name}\nContact: ${contact_no}\nPickup: ${pickupAddress}\nDrop: ${dropAddress}`;
+            await sendSMS(ownerPhone, message);
+
+            // const smsMessage = `New cab booking received:\nReference Number: ${referenceNo}\nName: ${name}\nContact No: ${contact_no}\nPickup: ${pickupAddress}\nDrop: ${dropAddress}`;
+            // await sendSMS(process.env.OWNER_PHONE, smsMessage); // Send SMS to owner's phone number
       
       
 
