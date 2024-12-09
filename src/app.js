@@ -2,9 +2,10 @@ const express = require('express');
 const dotenvConfig = require('./config/dotenvConfig');
 const connectDB = require('./config/db');
 const userRoutes = require('./controllers/userController');
+const cabRoutes = require('./controllers/cabController');
+
 
 const app = express();
-const cab = express();
 
 
 // Middleware
@@ -16,6 +17,6 @@ connectDB();
 
 // Routes
 userRoutes(app);
-userRoutes(cab)
+cabRoutes(app);
 
 module.exports = app;

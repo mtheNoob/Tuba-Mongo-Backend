@@ -12,7 +12,7 @@ const cabSchema = new mongoose.Schema(
             unique: false,  
         },
         contact_no: {
-            type: Number,
+            type: String,
             required: true
         },
         pickupAddress: {
@@ -45,4 +45,4 @@ const cabSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model('Cab', cabSchema);
+module.exports = mongoose.model('CabB', cabSchema);
