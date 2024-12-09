@@ -1,20 +1,29 @@
 const express = require('express');
-const CabB = require('../models/cabModel');
+const Cab = require('../models/cabModel');
 const cors = require("cors");
-const sendEmail = require('../config/mailer'); // Import the mailer
+const sendEmail = require('../config/mailer');
+const sendSMS = require("../config/sms_sender"); 
+
+function generateReferenceNumber() {
+    const timestamp = Date.now(); 
+    const randomSuffix = Math.floor(Math.random() * 10000); 
+    return `REF${timestamp}${randomSuffix}`;
+  }
+  
 
 module.exports = function (app) {
     const apiRoutes = express.Router();
 
     apiRoutes.post('/bookMyCab', async (req, res) => {
+
         const { name, email, contact_no, pickupAddress, dropAddress, pickupTime, dropTime, vehicleType, remarks } = req.body;
 
+        const referenceNo = generateReferenceNumber()
+
         try {
-            // Save booking to the database
-            const booking = new CabB({ name, email, contact_no, pickupAddress, dropAddress, pickupTime, dropTime, vehicleType, remarks });
+            const booking = new Cab({ name, email, contact_no, pickupAddress, dropAddress, pickupTime, dropTime, vehicleType, remarks, referenceNo });
             await booking.save();
 
-            // Prepare email details
             const userSubject = `Cab Booking Confirmation for ${name}`;
             const ownerSubject = `New Cab Booking Received: ${name}`;
             
@@ -28,6 +37,7 @@ module.exports = function (app) {
                 Pickup Time: ${new Date(pickupTime).toLocaleString()}
                 Drop Time: ${new Date(dropTime).toLocaleString()}
                 Vehicle Type: ${vehicleType}
+                Reference Number: ${referenceNo}
 
                 We will contact you shortly to confirm your booking.
 
@@ -49,16 +59,21 @@ module.exports = function (app) {
                 Drop Time: ${new Date(dropTime).toLocaleString()}
                 Vehicle Type: ${vehicleType}
                 Remarks: ${remarks || 'N/A'}
+                Reference Number: ${referenceNo}
+
 
                 Please review and confirm the booking.
 
                 Regards,
-                Automated Notification
+                Tuba International
             `;
 
-            // Send emails
             await sendEmail(email, userSubject, userText); // Email to the user
             await sendEmail(process.env.OWNER_MAIL, ownerSubject, ownerText); // Email to the owner
+            const smsMessage = `New cab booking received:\nReference Number: ${referenceNo}\nName: ${name}\nContact No: ${contact_no}\nPickup: ${pickupAddress}\nDrop: ${dropAddress}`;
+            await sendSMS(process.env.OWNER_PHONE, smsMessage); // Send SMS to owner's phone number
+      
+      
 
             res.status(200).send({ 
                 msg: 'Cab Booked successfully: We will get back to you soon!', 

@@ -39,6 +39,13 @@ const cabSchema = new mongoose.Schema(
         },
         remarks: {
             type: String,
+        },
+        referenceNo: {
+            type: String,
+        },
+        
+        fare: {
+            type: Number,
         }
      
     },
