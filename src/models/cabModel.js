@@ -1,0 +1,48 @@
+const mongoose = require('mongoose');
+
+const cabSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true
+        },                                          
+        email: {
+            type: String,
+            required: false,
+            unique: false,  
+        },
+        contact_no: {
+            type: Number,
+            required: true
+        },
+        pickupAddress: {
+            type: String,
+            required: false,
+            unique: false,  
+        },
+        dropAddress: {
+            type: String,
+            required: false,
+            unique: false 
+        },
+        pickupTime: {
+            type: String,
+            required: false
+        },
+        dropTime: {
+            type: String,
+            required: false
+        },
+        vehicleType: {
+            type: String,
+            required: false
+        },
+        remarks: {
+            type: String,
+        }
+     
+    },
+    { timestamps: true }
+);
+
+module.exports = mongoose.model('Cab', cabSchema);

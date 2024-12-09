@@ -4,6 +4,8 @@ const connectDB = require('./config/db');
 const userRoutes = require('./controllers/userController');
 
 const app = express();
+const cab = express();
+
 
 // Middleware
 app.use(express.json());
@@ -14,5 +16,6 @@ connectDB();
 
 // Routes
 userRoutes(app);
+userRoutes(cab)
 
 module.exports = app;

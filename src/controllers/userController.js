@@ -17,7 +17,7 @@ module.exports = function (app) {
             const existingUser = await User.findOne({ email });
             if (existingUser) {
                 return res.status(400).send({ msg: 'User already registered.' });
-            }
+            }                                
 
             const hashedPassword = await hashPassword(password);
             const newUser = await User.create({ name, email, password: hashedPassword });
