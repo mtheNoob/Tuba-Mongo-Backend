@@ -1,6 +1,4 @@
 const axios = require("axios");
-
-// Load environment variables from the .env file
 require("dotenv").config();
 
 const sendSMS = async (phone, message) => {
@@ -20,7 +18,7 @@ const sendSMS = async (phone, message) => {
         "Content-Type": "application/json",
       },
       data: {
-        route: "v3", // v3 route for transactional messages
+        route: "v3", 
         sender_id: "TXTIND",
         message: message,
         language: "english",

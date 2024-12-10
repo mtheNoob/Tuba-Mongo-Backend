@@ -3,6 +3,8 @@ const dotenvConfig = require('./config/dotenvConfig');
 const connectDB = require('./config/db');
 const userRoutes = require('./controllers/userController');
 const cabRoutes = require('./controllers/cabController');
+const hotelRoutes = require('./controllers/hotelController');
+
 const cors = require("cors");
 const bodyParser = require("body-parser")
 
@@ -34,5 +36,6 @@ connectDB();
 // Routes
 userRoutes(app);
 cabRoutes(app);
+hotelRoutes(app);
 
 module.exports = app;
