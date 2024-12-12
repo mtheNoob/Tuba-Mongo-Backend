@@ -51,5 +51,56 @@ module.exports = function (app) {
         }
     });
 
+    apiRoutes.post('/forget-password/send-otp', async (req, res) => {
+        const { emailOrUsername } = req.body;
+
+        try {
+            const user = await User.findOne({ email: emailOrUsername });
+            if (!user) {
+                return res.status(404).send({ msg: 'User not found.' });
+            }
+
+            const otp = crypto.randomInt(100000, 999999); // Generate a 6-digit OTP
+            otpStore[emailOrUsername] = otp; // Store OTP temporarily
+
+            // Send OTP via email
+            await sendEmail({
+                to: user.email,
+                subject: 'Password Reset OTP',
+                text: `Your OTP for password reset is: ${otp}`,
+            });
+
+            res.status(200).send({ msg: 'OTP sent to your email.' });
+        } catch (err) {
+            res.status(500).send({ msg: 'Error sending OTP.', error: err.message });
+        }
+    });
+
+    // Step 2: Verify OTP and save new password
+    apiRoutes.post('/forget-password/verify-otp', async (req, res) => {
+        const { emailOrUsername, otp, newPassword } = req.body;
+
+        try {
+            const storedOtp = otpStore[emailOrUsername];
+            if (!storedOtp || storedOtp !== parseInt(otp)) {
+                return res.status(400).send({ msg: 'Invalid or expired OTP.' });
+            }
+
+            const user = await User.findOne({ email: emailOrUsername });
+            if (!user) {
+                return res.status(404).send({ msg: 'User not found.' });
+            }
+
+            user.password = newPassword;
+            await user.save();
+
+            delete otpStore[emailOrUsername];
+
+            res.status(200).send({ msg: 'Password updated successfully.' });
+        } catch (err) {
+            res.status(500).send({ msg: 'Error updating password.', error: err.message });
+        }
+    });
+
     app.use('/', apiRoutes);
 };
