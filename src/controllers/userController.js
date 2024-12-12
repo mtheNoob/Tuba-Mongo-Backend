@@ -3,7 +3,9 @@ const User = require('../models/userModel');
 const cors = require("cors");
 const sendEmail = require('../config/mailer');
 const crypto = require('crypto');
-const otpStore = {}; 
+const otpStore = {};
+const Cab = require('../models/cabModel');
+const Hotel = require('../models/hotelModel');
 
 
 module.exports = function (app) {
@@ -37,23 +39,6 @@ module.exports = function (app) {
         }
     });
 
-    apiRoutes.post('/forget-password', async (req, res) => {
-        const { emailOrUsername, newPassword } = req.body;
-        try {
-            const user = await User.findOne({ emailOrUsername });
-            if (!user) {
-                return res.status(404).send({ msg: 'User not found.' });
-            }
-
-            user.password = newPassword;
-            await user.save();
-
-            res.status(200).send({ msg: 'Password updated successfully.' });
-        } catch (err) {
-            res.status(500).send({ msg: 'Error updating password.', error: err.message });
-        }
-    });
-
     apiRoutes.post('/forget-password/send-otp', async (req, res) => {
         const { emailOrUsername } = req.body;
         console.log("Body for Forget-Password", req.body);
@@ -61,17 +46,17 @@ module.exports = function (app) {
             const user = await User.findOne({ emailOrUsername });
             if (!user) {
                 console.log(`User not found for emailOrUsername: ${emailOrUsername}`);
-                return res.status(404).send({ msg: 'User not found.', status : "false" });
+                return res.status(404).send({ msg: 'User not found.', status: "false" });
             }
-    
+
             const otp = crypto.randomInt(100000, 999999);
             otpStore[emailOrUsername] = otp; // Store OTP temporarily
-    
+
             console.log(`Generated OTP: ${otp} for emailOrUsername: ${emailOrUsername}`);
-    
+
             await sendEmail(emailOrUsername, 'Password Reset OTP', `Your OTP for password reset is: ${otp}`);
-    
-            res.status(200).send({ msg: 'OTP sent to your email.', status : "true" });
+
+            res.status(200).send({ msg: 'OTP sent to your email.', status: "true" });
         } catch (err) {
             console.error(`Error sending OTP to ${emailOrUsername}:`, err.message);
             res.status(500).send({ msg: 'Error sending OTP.', error: err.message });
@@ -103,5 +88,31 @@ module.exports = function (app) {
         }
     });
 
+    apiRoutes.get('/user-dashboard', async (req, res) => {
+        const { emailOrUsername } = req.body;
+
+        try {
+
+            const user = await User.findOne({emailOrUsername});
+
+            if (!user) {
+                return res.status(400).send({ msg: 'No User Found', status: false })
+            }
+
+            const hotelBookings = await Hotel.find({ email : emailOrUsername });
+            const cabBookings = await Cab.find({email: emailOrUsername });
+
+            res.status(200).send({
+                msg: 'User dashboard data fetched successfully.',
+                data: {
+                    hotelBookings,
+                    cabBookings,
+                },
+            });
+        } catch (err) {
+            console.error('Error fetching user dashboard:', err.message);
+            res.status(500).send({ msg: 'Error fetching dashboard data.', error: err.message });
+        }
+    });
     app.use('/', apiRoutes);
 };
