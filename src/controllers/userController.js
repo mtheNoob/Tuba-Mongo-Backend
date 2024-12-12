@@ -3,6 +3,7 @@ const User = require('../models/userModel');
 const cors = require("cors");
 const sendEmail = require('../config/mailer');
 const crypto = require('crypto');
+const otpStore = {}; 
 
 
 module.exports = function (app) {
