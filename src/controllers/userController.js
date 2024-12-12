@@ -6,14 +6,14 @@ module.exports = function (app) {
     const apiRoutes = express.Router();
 
     apiRoutes.post('/register', async (req, res) => {
-        const { name, email, password } = req.body;
+        const { fullName, emailOrUsername, password } = req.body;
         try {
-            const existingUser = await User.findOne({ email });
+            const existingUser = await User.findOne({ emailOrUsername });
             if (existingUser) {
                 return res.status(400).send({ msg: 'User already registered.' });
             }
 
-            const newUser = await User.create({ name, email, password });
+            const newUser = await User.create({ fullName, emailOrUsername, password });
             res.status(201).send({ msg: 'User registered successfully.', user: newUser });
         } catch (err) {
             res.status(500).send({ msg: 'Error registering user.', error: err.message });
@@ -21,7 +21,7 @@ module.exports = function (app) {
     });
 
     apiRoutes.post('/login', async (req, res) => {
-        const { email, password } = req.body;
+        const { emailOrUsername, password } = req.body;
         try {
             const user = await User.findOne({ email });
             if (!user || user.password !== password) {
