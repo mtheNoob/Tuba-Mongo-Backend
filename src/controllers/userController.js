@@ -56,7 +56,7 @@ module.exports = function (app) {
 
     apiRoutes.post('/forget-password/send-otp', async (req, res) => {
         const { emailOrUsername } = req.body;
-    
+        console.log("Body for Forget-Password", req.body);
         try {
             const user = await User.findOne({ emailOrUsername });
             if (!user) {
