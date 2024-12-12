@@ -27,9 +27,27 @@ module.exports = function (app) {
             if (!user || user.password !== password) {
                 return res.status(400).send({ msg: 'Invalid credentials.' });
             }
-            res.status(200).send({ msg: 'Login successful.', user });
+            res.status(200).send({ msg: 'Login successful.' });
         } catch (err) {
             res.status(500).send({ msg: 'Error logging in.', error: err.message });
+        }
+    });
+
+
+    apiRoutes.post('/forget-password', async (req, res) => {
+        const { emailOrUsername, newPassword } = req.body;
+        try {
+            const user = await User.findOne({ emailOrUsername });
+            if (!user) {
+                return res.status(404).send({ msg: 'User not found.' });
+            }
+
+            user.password = newPassword;
+            await user.save();
+
+            res.status(200).send({ msg: 'Password updated successfully.' });
+        } catch (err) {
+            res.status(500).send({ msg: 'Error updating password.', error: err.message });
         }
     });
 
