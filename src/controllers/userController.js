@@ -61,7 +61,7 @@ module.exports = function (app) {
             const user = await User.findOne({ emailOrUsername });
             if (!user) {
                 console.log(`User not found for emailOrUsername: ${emailOrUsername}`);
-                return res.status(404).send({ msg: 'User not found.' });
+                return res.status(404).send({ msg: 'User not found.', status : "false" });
             }
     
             const otp = crypto.randomInt(100000, 999999);
@@ -71,7 +71,7 @@ module.exports = function (app) {
     
             await sendEmail(emailOrUsername, 'Password Reset OTP', `Your OTP for password reset is: ${otp}`);
     
-            res.status(200).send({ msg: 'OTP sent to your email.' });
+            res.status(200).send({ msg: 'OTP sent to your email.', status : "true" });
         } catch (err) {
             console.error(`Error sending OTP to ${emailOrUsername}:`, err.message);
             res.status(500).send({ msg: 'Error sending OTP.', error: err.message });
