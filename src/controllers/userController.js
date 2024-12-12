@@ -1,6 +1,9 @@
 const express = require('express');
 const User = require('../models/userModel');
 const cors = require("cors");
+const sendEmail = require('../config/mailer');
+const crypto = require('crypto');
+
 
 module.exports = function (app) {
     const apiRoutes = express.Router();
