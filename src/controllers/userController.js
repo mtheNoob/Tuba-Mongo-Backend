@@ -55,7 +55,7 @@ module.exports = function (app) {
         const { emailOrUsername } = req.body;
 
         try {
-            const user = await User.findOne({ email: emailOrUsername });
+            const user = await User.findOne({ emailOrUsername });
             if (!user) {
                 return res.status(404).send({ msg: 'User not found.' });
             }
@@ -65,7 +65,7 @@ module.exports = function (app) {
 
             // Send OTP via email
             await sendEmail({
-                to: user.email,
+                to: user.emailOrUsername,
                 subject: 'Password Reset OTP',
                 text: `Your OTP for password reset is: ${otp}`,
             });
