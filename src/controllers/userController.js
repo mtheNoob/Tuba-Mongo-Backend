@@ -37,7 +37,6 @@ module.exports = function (app) {
         }
     });
 
-
     apiRoutes.post('/forget-password', async (req, res) => {
         const { emailOrUsername, newPassword } = req.body;
         try {
@@ -57,30 +56,28 @@ module.exports = function (app) {
 
     apiRoutes.post('/forget-password/send-otp', async (req, res) => {
         const { emailOrUsername } = req.body;
-
+    
         try {
             const user = await User.findOne({ emailOrUsername });
             if (!user) {
+                console.log(`User not found for emailOrUsername: ${emailOrUsername}`);
                 return res.status(404).send({ msg: 'User not found.' });
             }
-
-            const otp = crypto.randomInt(100000, 999999); // Generate a 6-digit OTP
+    
+            const otp = crypto.randomInt(100000, 999999);
             otpStore[emailOrUsername] = otp; // Store OTP temporarily
-
-            // Send OTP via email
-            await sendEmail({
-                to: user.emailOrUsername,
-                subject: 'Password Reset OTP',
-                text: `Your OTP for password reset is: ${otp}`,
-            });
-
+    
+            console.log(`Generated OTP: ${otp} for emailOrUsername: ${emailOrUsername}`);
+    
+            await sendEmail(emailOrUsername, 'Password Reset OTP', `Your OTP for password reset is: ${otp}`);
+    
             res.status(200).send({ msg: 'OTP sent to your email.' });
         } catch (err) {
+            console.error(`Error sending OTP to ${emailOrUsername}:`, err.message);
             res.status(500).send({ msg: 'Error sending OTP.', error: err.message });
         }
     });
 
-    // Step 2: Verify OTP and save new password
     apiRoutes.post('/forget-password/verify-otp', async (req, res) => {
         const { emailOrUsername, otp, newPassword } = req.body;
 
@@ -90,7 +87,7 @@ module.exports = function (app) {
                 return res.status(400).send({ msg: 'Invalid or expired OTP.' });
             }
 
-            const user = await User.findOne({ email: emailOrUsername });
+            const user = await User.findOne({ emailOrUsername });
             if (!user) {
                 return res.status(404).send({ msg: 'User not found.' });
             }
