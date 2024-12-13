@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const otpStore = {};
 const Cab = require('../models/cabModel');
 const Hotel = require('../models/hotelModel');
+const Flight = require('../models/flightModel')
 
 
 module.exports = function (app) {
@@ -101,12 +102,13 @@ module.exports = function (app) {
 
             const hotelBookings = await Hotel.find({ email : emailOrUsername });
             const cabBookings = await Cab.find({email: emailOrUsername });
-
+            const flightBookings = await Flight.find({email: emailOrUsername})
             res.status(200).send({
                 msg: 'User dashboard data fetched successfully.',
                 data: {
                     hotelBookings,
                     cabBookings,
+                    flightBookings
                 },
             });
         } catch (err) {

@@ -104,15 +104,14 @@ apiRoutes.post("/getFlightData", async (req, res) => {
     departure_id,
     arrival_id,
     outbound_date,
-    return_date, // Optional
+    return_date, 
     currency,
     type, // Type: 1 (Round trip) or 2 (One-way)
     travel_class = 1, // Default to 1 (economy)
-    adults = 1, // Default to 1 adult
-    children = 0, // Default to 0 children
+    adults = 1,
+    children = 0, 
   } = req.body;
 
-  // Validate required parameters
   if (!departure_id || !arrival_id || !outbound_date || !currency || typeof type === "undefined") {
     return res.status(400).json({
       success: false,
@@ -120,7 +119,6 @@ apiRoutes.post("/getFlightData", async (req, res) => {
     });
   }
 
-  // Validate type-specific requirements
   if (type === 1 && !return_date) {
     return res.status(400).json({
       success: false,
