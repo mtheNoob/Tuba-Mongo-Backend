@@ -201,6 +201,41 @@ apiRoutes.post("/getFlightData", async (req, res) => {
   }
 });
 
-  
+apiRoutes.post("/autosuggest", async (req, res) => {
+  const { query, limit = 10 } = req.body; // Extract query and limit from req.body
+console.log("Payload",req.body)
+  // Validate required parameters
+  if (!query) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing required parameter: query",
+    });
+  }
+
+  try {
+    // Build the request URL
+    const url = `https://flights-explorer.makemytrip.com/autosuggest`;
+
+    // Make the GET request to the external API with query and limit
+    const response = await axios.get(url, {
+      params: { query, limit },
+    });
+
+    // Respond with the data from the API
+    return res.status(200).json({
+      success: true,
+      suggestions: response.data, // Forward the suggestions directly
+    });
+  } catch (error) {
+    console.error("Error fetching auto-suggestions:", error.message || error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch auto-suggestions.",
+      error: error.message || error,
+    });
+  }
+});
+
+
   app.use("/", apiRoutes);
 };
