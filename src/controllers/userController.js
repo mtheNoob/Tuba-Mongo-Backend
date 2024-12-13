@@ -1,6 +1,5 @@
 const express = require('express');
 const User = require('../models/userModel');
-const cors = require("cors");
 const sendEmail = require('../config/mailer');
 const crypto = require('crypto');
 const otpStore = {};
@@ -9,6 +8,7 @@ const Hotel = require('../models/hotelModel');
 
 
 module.exports = function (app) {
+
     const apiRoutes = express.Router();
 
     apiRoutes.post('/register', async (req, res) => {
@@ -41,7 +41,7 @@ module.exports = function (app) {
 
     apiRoutes.post('/forget-password/send-otp', async (req, res) => {
         const { emailOrUsername } = req.body;
-        console.log("Body for Forget-Password", req.body);
+        console.log("Body for Forget-Password::::", req.body);
         try {
             const user = await User.findOne({ emailOrUsername });
             if (!user) {
@@ -96,7 +96,7 @@ module.exports = function (app) {
             const user = await User.findOne({emailOrUsername});
 
             if (!user) {
-                return res.status(400).send({ msg: 'No User Found', status: false })
+                return res.status(400).send({ msg: 'No User Found', status: "false" })
             }
 
             const hotelBookings = await Hotel.find({ email : emailOrUsername });

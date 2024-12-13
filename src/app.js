@@ -4,6 +4,7 @@ const connectDB = require('./config/db');
 const userRoutes = require('./controllers/userController');
 const cabRoutes = require('./controllers/cabController');
 const hotelRoutes = require('./controllers/hotelController');
+const flightRoutes = require('./controllers/flightController');
 
 const cors = require("cors");
 const bodyParser = require("body-parser")
@@ -37,5 +38,6 @@ connectDB();
 userRoutes(app);
 cabRoutes(app);
 hotelRoutes(app);
+flightRoutes(app)
 
 module.exports = app;
