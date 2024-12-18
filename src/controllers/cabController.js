@@ -1,6 +1,5 @@
 const express = require('express');
 const Cab = require('../models/cabModel');
-const cors = require("cors");
 const sendEmail = require('../config/mailer');
 const sendSMS = require("../config/sms_sender"); 
 

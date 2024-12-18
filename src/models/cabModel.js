@@ -52,4 +52,4 @@ const cabSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model('CabB', cabSchema);
+module.exports = mongoose.model('Cab', cabSchema);

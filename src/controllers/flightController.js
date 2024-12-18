@@ -199,9 +199,45 @@ apiRoutes.post("/getFlightData", async (req, res) => {
   }
 });
 
+// apiRoutes.post("/autosuggest", async (req, res) => {
+//   const { query, limit = 10 } = req.body; // Extract query and limit from req.body
+// console.log("Payload",req.body)
+//   // Validate required parameters
+//   if (!query) {
+//     return res.status(400).json({
+//       success: false,
+//       message: "Missing required parameter: query",
+//     });
+//   }
+
+//   try {
+//     // Build the request URL
+//     const url = `https://flights-explorer.makemytrip.com/autosuggest`;
+
+//     // Make the GET request to the external API with query and limit
+//     const response = await axios.get(url, {
+//       params: { query, limit },
+//     });
+
+//     // Respond with the data from the API
+//     return res.status(200).json({
+//       success: true,
+//       suggestions: response.data, // Forward the suggestions directly
+//     });
+//   } catch (error) {
+//     console.error("Error fetching auto-suggestions:", error.message || error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Failed to fetch auto-suggestions.",
+//       error: error.message || error,
+//     });
+//   }
+// });
+
 apiRoutes.post("/autosuggest", async (req, res) => {
   const { query, limit = 10 } = req.body; // Extract query and limit from req.body
-console.log("Payload",req.body)
+  console.log("Payload", req.body);
+
   // Validate required parameters
   if (!query) {
     return res.status(400).json({
@@ -219,10 +255,25 @@ console.log("Payload",req.body)
       params: { query, limit },
     });
 
-    // Respond with the data from the API
+    // Transform the API response
+    const mainAirports = response.data.r.map((item) => ({
+      code: item.iata,
+      name: `${item.n} - ${item.ct}`,
+    }));
+
+    const nearbyAirports = response.data.r
+      .flatMap((item) => item.nb || []) // Extract and flatten nearby airports
+      .map((nearby) => ({
+        code: nearby.iata,
+        name: `${nearby.n} - ${nearby.ct}`,
+        distance: nearby.d, // Include distance if available
+      }));
+
+    // Respond with the transformed data
     return res.status(200).json({
       success: true,
-      suggestions: response.data, // Forward the suggestions directly
+      mainAirports,
+      nearbyAirports,
     });
   } catch (error) {
     console.error("Error fetching auto-suggestions:", error.message || error);
@@ -233,6 +284,7 @@ console.log("Payload",req.body)
     });
   }
 });
+
 
 
   app.use("/", apiRoutes);
