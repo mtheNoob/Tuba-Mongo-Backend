@@ -258,7 +258,7 @@ apiRoutes.post("/autosuggest", async (req, res) => {
     // Transform the API response
     const mainAirports = response.data.r.map((item) => ({
       code: item.iata,
-      name: `${item.n} - ${item.ct}`,
+      name: `${item.iata} - ${item.n} - ${item.ct}`,
     }));
 
     const nearbyAirports = response.data.r
