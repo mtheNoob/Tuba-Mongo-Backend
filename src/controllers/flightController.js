@@ -119,7 +119,7 @@ apiRoutes.post("/getFlightData", async (req, res) => {
     });
   }
 
-  if (type === 1 && !return_date) {
+  if (type === 2 && !return_date) {
     return res.status(400).json({
       success: false,
       message: "return_date is required for round trips (type: 1).",
@@ -155,7 +155,7 @@ apiRoutes.post("/getFlightData", async (req, res) => {
     };
 
     // Include return_date only for round trips
-    if (type === 1) {
+    if (type === 2) {
       params.return_date = return_date;
     }
 
