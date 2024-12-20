@@ -2,7 +2,6 @@ const express = require('express');
 const Tour = require('../models/tourModel');
 const sendEmail = require('../config/mailer');
 const sendSMS = require('../config/sms_sender');
-
 function generateReferenceNumber() {
     const timestamp = Date.now();
     const randomSuffix = Math.floor(Math.random() * 10000);
@@ -101,7 +100,7 @@ Name: ${name}
 Contact: ${phone}
 Destination: ${destination}
 Reference: ${referenceNo}`;
-            await sendSMS(OWNER_PHONE, smsMessage);
+            await sendSMS(process.env.OWNER_PHONE, smsMessage);
 
             res.status(200).send({ 
                 msg: 'Tour booking submitted successfully. We will get back to you soon!', 
