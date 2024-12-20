@@ -3,7 +3,7 @@ const axios = require("axios");
 const Hotel = require('../models/hotelModel');
 const sendEmail = require('../config/mailer');
 const sendSMS = require("../config/sms_sender"); 
-
+const api_key = process.env.SERPAPI_KEY
 function generateReferenceNumber() {
   const timestamp = Date.now();
   const randomSuffix = Math.floor(Math.random() * 10000);
@@ -25,8 +25,8 @@ module.exports = function (app) {
     }
 
     try {
-      const apiKey = "f78e0b13280663ce45375f3ef7ef6052972494a114044918779c486f6c5df7bd"; // Replace with your actual API key
-      const url = `https://serpapi.com/search?engine=google_hotels&api_key=${apiKey}`;
+      // const apiKey = "f78e0b13280663ce45375f3ef7ef6052972494a114044918779c486f6c5df7bd"; // Replace with your actual API key
+      const url = `https://serpapi.com/search?engine=google_hotels&api_key=${api_key}`;
 
       const response = await axios.get(url, {
         params: { check_in_date, check_out_date, q },
