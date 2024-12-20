@@ -5,6 +5,8 @@ const userRoutes = require('./controllers/userController');
 const cabRoutes = require('./controllers/cabController');
 const hotelRoutes = require('./controllers/hotelController');
 const flightRoutes = require('./controllers/flightController');
+const visaRoutes = require('./controllers/visaController');
+
 
 const cors = require("cors");
 const bodyParser = require("body-parser")
@@ -39,5 +41,5 @@ userRoutes(app);
 cabRoutes(app);
 hotelRoutes(app);
 flightRoutes(app)
-
+visaRoutes(app)
 module.exports = app;

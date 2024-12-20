@@ -112,8 +112,8 @@ module.exports = function (app) {
                 },
             });
         } catch (err) {
-            console.error('Error fetching user dashboard:', err.message);
-            res.status(500).send({ msg: 'Error fetching dashboard data.', error: err.message });
+            console.error('Error fetching user dashboard:', err.message && err);
+            res.status(500).send({ msg: 'Error fetching dashboard data.', error: err.message && err});
         }
     });
     app.use('/', apiRoutes);
