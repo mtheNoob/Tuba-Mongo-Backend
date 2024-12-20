@@ -25,7 +25,7 @@ module.exports = function (app) {
     }
 
     try {
-      const apiKey = "7c152a9bce40a546409efdef67b8403723f9a26ac0c2a3716d463e60e2c97818"; // Replace with your actual API key
+      const apiKey = "f78e0b13280663ce45375f3ef7ef6052972494a114044918779c486f6c5df7bd"; // Replace with your actual API key
       const url = `https://serpapi.com/search?engine=google_hotels&api_key=${apiKey}`;
 
       const response = await axios.get(url, {

@@ -152,7 +152,7 @@ apiRoutes.post("/getFlightData", async (req, res) => {
 // });
 
 apiRoutes.post("/autosuggest", async (req, res) => {
-  const { query, limit = 10 } = req.body; // Extract query and limit from req.body
+  const { query, limit = 10 } = req.body; 
   console.log("Payload", req.body);
 
   // Validate required parameters
