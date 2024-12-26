@@ -6,6 +6,7 @@ const otpStore = {};
 const Cab = require('../models/cabModel');
 const Hotel = require('../models/hotelModel');
 const Flight = require('../models/flightModel')
+const User = require('../models/userModel')
 
 
 module.exports = function (app) {
@@ -99,13 +100,14 @@ module.exports = function (app) {
             if (!user) {
                 return res.status(400).send({ msg: 'No User Found', status: "false" })
             }
-
+            const userData = await User.find({email : emailOrUsername || emailOrUsername})
             const hotelBookings = await Hotel.find({ email : emailOrUsername });
             const cabBookings = await Cab.find({email: emailOrUsername });
             const flightBookings = await Flight.find({email: emailOrUsername})
             res.status(200).send({
                 msg: 'User dashboard data fetched successfully.',
                 data: {
+                    userData,
                     hotelBookings,
                     cabBookings,
                     flightBookings
