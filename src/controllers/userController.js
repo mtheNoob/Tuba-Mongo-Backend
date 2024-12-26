@@ -35,7 +35,7 @@ module.exports = function (app) {
             if (!user || user.password !== password) {
                 return res.status(400).send({ msg: 'Invalid credentials.' });
             }
-            res.status(200).send({ msg: 'Login successful.' });
+            res.status(200).send({ msg: 'Login successful.', email: emailOrUsername });
         } catch (err) {
             res.status(500).send({ msg: 'Error logging in.', error: err.message });
         }
