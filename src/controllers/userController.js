@@ -99,7 +99,7 @@ module.exports = function (app) {
             if (!user) {
                 return res.status(400).send({ msg: 'No User Found', status: "false" })
             }
-            const userData = await User.findAll({email : emailOrUsername || emailOrUsername})
+            const userData = await User.find({email : emailOrUsername || emailOrUsername})
             const hotelBookings = await Hotel.find({ email : emailOrUsername });
             const cabBookings = await Cab.find({email: emailOrUsername });
             const flightBookings = await Flight.find({email: emailOrUsername})
