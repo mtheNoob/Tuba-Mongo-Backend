@@ -100,9 +100,9 @@ module.exports = function (app) {
                 return res.status(400).send({ msg: 'No User Found', status: "false" })
             }
             const userData = await User.findOne({emailOrUsername: email|| emailOrUsername})
-            const hotelBookings = await Hotel.find({ email : emailOrUsername });
-            const cabBookings = await Cab.find({email: emailOrUsername });
-            const flightBookings = await Flight.find({email: emailOrUsername})
+            const hotelBookings = await Hotel.find({ email : email });
+            const cabBookings = await Cab.find({email: email });
+            const flightBookings = await Flight.find({email: email})
             res.status(200).send({
                 msg: 'User dashboard data fetched successfully.',
                 data: {
