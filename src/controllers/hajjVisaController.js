@@ -25,7 +25,7 @@ module.exports = function (app) {
         const referenceNo = generateReferenceNumber();
 
         try {
-            const HajjApplication = new HajjApplication({
+            const HajjApp = new HajjApplication({
                 name,
                 email,
                 contactNo,
