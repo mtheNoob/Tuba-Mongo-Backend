@@ -6,7 +6,6 @@ const otpStore = {};
 const Cab = require('../models/cabModel');
 const Hotel = require('../models/hotelModel');
 const Flight = require('../models/flightModel')
-const User = require('../models/userModel')
 
 
 module.exports = function (app) {
