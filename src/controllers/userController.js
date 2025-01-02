@@ -6,6 +6,9 @@ const otpStore = {};
 const Cab = require('../models/cabModel');
 const Hotel = require('../models/hotelModel');
 const Flight = require('../models/flightModel')
+const eVisa = require('../models/eVisaModel')
+const Visa = require('../models/visaModel')
+const Tour = require('../models/tourModel')
 
 
 module.exports = function (app) {
@@ -103,13 +106,20 @@ module.exports = function (app) {
             const hotelBookings = await Hotel.find({ email : emailOrUsername });
             const cabBookings = await Cab.find({email: emailOrUsername });
             const flightBookings = await Flight.find({email: emailOrUsername})
+            const eVisaStampings = await eVisa.find({email: emailOrUsername})
+            const visaData = await Visa.find({email: emailOrUsername})
+            const TOurData = await Tour.find({email: emailOrUsername})
+
             res.status(200).send({
                 msg: 'User dashboard data fetched successfully.',
                 data: {
                     userData,
                     hotelBookings,
                     cabBookings,
-                    flightBookings
+                    flightBookings,
+                    eVisaStampings,
+                    visaData,
+                    TOurData
                 },
             });
         } catch (err) {
