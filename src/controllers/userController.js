@@ -94,7 +94,7 @@ module.exports = function (app) {
 
         try {
 
-            const user = await User.findOne({email});
+            const user = await User.findOne({emailOrUsername});
 
             if (!user) {
                 return res.status(400).send({ msg: 'No User Found', status: "false" })
