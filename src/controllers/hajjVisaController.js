@@ -1,5 +1,5 @@
 const express = require('express');
-const HajjApplication = require('../models/hajjModel');
+const Hajj = require('../models/hajjModel');
 const sendEmail = require('../config/mailer');
 const sendSMS = require('../config/sms_sender');
 
@@ -25,7 +25,7 @@ module.exports = function (app) {
         const referenceNo = generateReferenceNumber();
 
         try {
-            const HajjApp = new HajjApplication({
+            const HajjApplication = new Hajj({
                 name,
                 email,
                 contactNo,

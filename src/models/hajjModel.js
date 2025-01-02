@@ -21,7 +21,6 @@ const hajjSchema = new mongoose.Schema({
   },
   visa_type: {
     type: String,
-    enum: ['tourist', 'business', 'student', 'work'],
     required: true
   },
   purpose: {

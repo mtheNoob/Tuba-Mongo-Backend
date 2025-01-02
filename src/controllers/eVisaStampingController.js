@@ -1,5 +1,5 @@
 const express = require('express');
-const eVisaApplication = require('../models/eVisaModel');
+const eVisa = require('../models/eVisaModel');
 const sendEmail = require('../config/mailer');
 const sendSMS = require('../config/sms_sender');
 
@@ -25,7 +25,7 @@ module.exports = function (app) {
         const referenceNo = generateReferenceNumber();
 
         try {
-            const eVisaApplication = new eVisaApplication({
+            const eVisaApplication = new eVisa({
                 name,
                 email,
                 contactNo,
