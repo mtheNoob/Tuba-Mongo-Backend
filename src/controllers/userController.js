@@ -89,7 +89,7 @@ module.exports = function (app) {
         }
     });
 
-    apiRoutes.get('/user-dashboard', async (req, res) => {
+    apiRoutes.post('/user-dashboard', async (req, res) => {
         const { emailOrUsername, email } = req.body;
 
         try {
