@@ -1,6 +1,6 @@
 const express = require("express");
 const axios = require("axios");
-const Hotel = require('../models/flightModel');
+const Flight = require('../models/flightModel');
 const sendEmail = require('../config/mailer');
 const sendSMS = require("../config/sms_sender"); 
 const dotenv = require('dotenv');
@@ -203,7 +203,57 @@ apiRoutes.post("/autosuggest", async (req, res) => {
   }
 });
 
+app.post('/bookFlight', async (req, res) => {
+  try {
+      const { flight, passenger, journey } = req.body;
 
+      // Validate required fields
+      if (!flight || !passenger || !journey) {
+          return res.status(400).json({ message: 'Flight, passenger, and journey details are required.' });
+      }
+
+      // Create a new flight document
+      const newFlight = new Flight({
+          flight: {
+              airline: flight.airline,
+              departure_airport: flight.departure_airport,
+              arrival_airport: flight.arrival_airport,
+              departure_time: new Date(flight.departure_time),
+              arrival_time: new Date(flight.arrival_time),
+              duration: flight.duration,
+              fare: flight.fare,
+              image_link: flight.image_link,
+              total_price: flight.total_price,
+              currency: flight.currency,
+              type: flight.type,
+              travel_class: flight.travel_class,
+          },
+          passenger: {
+              name: passenger.name,
+              email: passenger.email,
+              phone: passenger.phone,
+              totalPassengers: passenger.totalPassengers,
+          },
+          journey: {
+              from: journey.from,
+              to: journey.to,
+              date: new Date(journey.date),
+          },
+      });
+
+      // Save the flight document to MongoDB
+      const savedFlight = await newFlight.save();
+
+      // Send a success response
+      return res.status(201).json({
+          message: 'Flight data saved successfully!',
+          flight: savedFlight,
+      });
+  } catch (error) {
+      console.error('Error saving flight data:', error);
+      return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
+});
 
   app.use("/", apiRoutes);
 };
