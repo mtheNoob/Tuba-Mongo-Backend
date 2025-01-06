@@ -244,7 +244,7 @@ apiRoutes.post('/bookFlight', async (req, res) => {
   }
 });
 
-apiRoutes.get('getBookingData', async (req, res) => {
+apiRoutes.get('/getBookingData', async (req, res) => {
   try {
       const flights = await Flight.find();
 
