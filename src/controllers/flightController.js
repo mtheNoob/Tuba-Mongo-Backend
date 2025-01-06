@@ -41,7 +41,6 @@ apiRoutes.post("/getFlightData", async (req, res) => {
     });
   }
 
-  // Validate travel_class
   if (![1, 2, 3, 4].includes(travel_class)) {
     return res.status(400).json({
       success: false,
@@ -56,7 +55,6 @@ apiRoutes.post("/getFlightData", async (req, res) => {
 
     const url = `https://serpapi.com/search?engine=google_flights`;
 
-    // Build the request payload
     const params = {
       api_key: process.env.SERPAPI_KEY,
       engine: "google_flights",
@@ -85,7 +83,7 @@ apiRoutes.post("/getFlightData", async (req, res) => {
 
       const departureTime = new Date(firstLeg?.departure_airport?.time);
       const arrivalTime = new Date(lastLeg?.arrival_airport?.time);
-      const durationMinutes = (arrivalTime - departureTime) / (1000 * 60); // Calculate duration in minutes
+      const durationMinutes = (arrivalTime - departureTime) / (1000 * 60); 
 
       return {
         airline: firstLeg?.airline || "Unknown Airline",
@@ -156,7 +154,6 @@ apiRoutes.post("/autosuggest", async (req, res) => {
   const { query, limit = 10 } = req.body; 
   console.log("Payload", req.body);
 
-  // Validate required parameters
   if (!query) {
     return res.status(400).json({
       success: false,
@@ -165,29 +162,25 @@ apiRoutes.post("/autosuggest", async (req, res) => {
   }
 
   try {
-    // Build the request URL
     const url = `https://flights-explorer.makemytrip.com/autosuggest`;
 
-    // Make the GET request to the external API with query and limit
     const response = await axios.get(url, {
       params: { query, limit },
     });
 
-    // Transform the API response
     const mainAirports = response.data.r.map((item) => ({
       code: item.iata,
       name: `${item.n} - ${item.ct}`,
     }));
 
     const nearbyAirports = response.data.r
-      .flatMap((item) => item.nb || []) // Extract and flatten nearby airports
+      .flatMap((item) => item.nb || []) 
       .map((nearby) => ({
         code: nearby.iata,
         name: `${nearby.n} - ${nearby.ct}`,
-        distance: nearby.d, // Include distance if available
+        distance: nearby.d, 
       }));
 
-    // Respond with the transformed data
     return res.status(200).json({
       success: true,
       mainAirports,
@@ -203,16 +196,14 @@ apiRoutes.post("/autosuggest", async (req, res) => {
   }
 });
 
-app.post('/bookFlight', async (req, res) => {
+apiRoutes.post('/bookFlight', async (req, res) => {
   try {
       const { flight, passenger, journey } = req.body;
 
-      // Validate required fields
       if (!flight || !passenger || !journey) {
           return res.status(400).json({ message: 'Flight, passenger, and journey details are required.' });
       }
 
-      // Create a new flight document
       const newFlight = new Flight({
           flight: {
               airline: flight.airline,
@@ -241,10 +232,8 @@ app.post('/bookFlight', async (req, res) => {
           },
       });
 
-      // Save the flight document to MongoDB
       const savedFlight = await newFlight.save();
 
-      // Send a success response
       return res.status(201).json({
           message: 'Flight data saved successfully!',
           flight: savedFlight,
@@ -254,6 +243,21 @@ app.post('/bookFlight', async (req, res) => {
       return res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 });
+
+apiRoutes.get('getBookingData', async (req, res) => {
+  try {
+      const flights = await Flight.find();
+
+      return res.status(200).json({
+          message: 'Flights fetched successfully!',
+          flights,
+      });
+  } catch (error) {
+      console.error('Error fetching flight data:', error);
+      return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
+});
+
 
   app.use("/", apiRoutes);
 };
