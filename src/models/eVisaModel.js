@@ -10,8 +10,6 @@ const eVisaSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    lowercase: true,
-    trim: true
   },
   contactNo: {
     type: String,
