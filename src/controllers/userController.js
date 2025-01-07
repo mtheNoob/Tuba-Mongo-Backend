@@ -108,7 +108,7 @@ module.exports = function (app) {
             const flightBookings = await Flight.find({email: emailOrUsername})
             const eVisaStampings = await eVisa.find({email: emailOrUsername})
             const visaData = await Visa.find({email: emailOrUsername})
-            const TOurData = await Tour.find({email: emailOrUsername})
+            const TourData = await Tour.find({email: emailOrUsername})
 
             res.status(200).send({
                 msg: 'User dashboard data fetched successfully.',
@@ -119,7 +119,7 @@ module.exports = function (app) {
                     flightBookings,
                     eVisaStampings,
                     visaData,
-                    TOurData
+                    TourData
                 },
             });
         } catch (err) {

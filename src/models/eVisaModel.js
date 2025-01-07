@@ -19,7 +19,7 @@ const eVisaSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  visa_type: {
+  visaType: {
     type: String,
   
   },

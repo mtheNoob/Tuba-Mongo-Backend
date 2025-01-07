@@ -84,6 +84,10 @@ const visaSchema = new mongoose.Schema({
     enum: ['pending', 'approved', 'rejected'],
     default: 'pending'
   },
+  visaType: {
+    type: String,
+  
+  },
   created_at: {
     type: Date,
     default: Date.now
