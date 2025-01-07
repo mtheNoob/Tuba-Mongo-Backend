@@ -19,7 +19,8 @@ module.exports = function (app) {
             contactNo,
             visaType,
             purpose,
-            passengers
+            passengers,
+            country
         } = req.body;
     
         // Generate a unique reference number
@@ -34,7 +35,8 @@ module.exports = function (app) {
                 purpose,
                 passengers,
                 created_at: new Date(),
-                referenceNo
+                referenceNo,
+                country
             });
     
             const savedApplication = await eVisaApplication.save();
@@ -65,6 +67,7 @@ module.exports = function (app) {
                 Email: ${email}
                 Contact No: ${contactNo}
                 Visa Type: ${visaType}
+                Country : ${country}
                 Reference Number: ${referenceNo}
     
                 Please review and process the application.

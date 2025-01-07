@@ -6,7 +6,10 @@ const eVisaSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-
+  country: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
