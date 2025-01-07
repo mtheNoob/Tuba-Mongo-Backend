@@ -26,22 +26,19 @@ module.exports = function (app) {
         const referenceNo = generateReferenceNumber();
     
         try {
-            // Create a new eVisa application record
             const eVisaApplication = new eVisa({
                 name,
                 email,
                 contactNo,
-                visa_type,
+                visaType,
                 purpose,
                 passengers,
                 created_at: new Date(),
                 referenceNo
             });
     
-            // Save the application to the database
             const savedApplication = await eVisaApplication.save();
     
-            // Prepare email subjects and messages
             const userSubject = `E-Visa Stamping Application Confirmation for ${name}`;
             const adminSubject = `New E-Visa Stamping Application Received: ${name}`;
     
@@ -50,7 +47,7 @@ module.exports = function (app) {
     
                 Thank you for applying for a visa through our service. Here are your application details:
     
-                Visa Type: ${visa_type}
+                Visa Type: ${visaType}
                 Reference Number: ${referenceNo}
     
                 We will contact you shortly with further updates.
@@ -67,7 +64,7 @@ module.exports = function (app) {
                 Name: ${name}
                 Email: ${email}
                 Contact No: ${contactNo}
-                Visa Type: ${visa_type}
+                Visa Type: ${visaType}
                 Reference Number: ${referenceNo}
     
                 Please review and process the application.
@@ -76,13 +73,10 @@ module.exports = function (app) {
                 Visa Services Team
             `;
     
-            // Send confirmation email to the user
             await sendEmail(email, userSubject, userText);
     
-            // Notify the admin via email
             await sendEmail(process.env.OWNER_MAIL, adminSubject, adminText);
     
-            // Notify the admin via SMS
             const adminPhone = process.env.OWNER_PHONE;
             const smsMessage = `New Visa Application:
             Name: ${name}
@@ -90,7 +84,6 @@ module.exports = function (app) {
             Reference: ${referenceNo}`;
             await sendSMS(adminPhone, smsMessage);
     
-            // Respond with success and saved application data
             res.status(200).send({
                 msg: 'Visa application submitted successfully. We will get back to you soon!',
                 applicationData: savedApplication

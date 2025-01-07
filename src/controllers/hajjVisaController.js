@@ -31,7 +31,7 @@ module.exports = function (app) {
                 name,
                 email,
                 contactNo,
-                visa_type,
+                visaType,
                 purpose,
                 passengers,
                 created_at: new Date(),
@@ -50,7 +50,7 @@ module.exports = function (app) {
     
                 Thank you for applying for Hajj/Umrah through our service. Here are your application details:
     
-                Visa Type: ${visa_type}
+                Visa Type: ${visaType}
                 Reference Number: ${referenceNo}
     
                 We will contact you shortly with further updates.
@@ -67,7 +67,7 @@ module.exports = function (app) {
                 Name: ${name}
                 Email: ${email}
                 Contact No: ${contactNo}
-                Visa Type: ${visa_type}
+                Visa Type: ${visaType}
                 Reference Number: ${referenceNo}
     
                 Please review and process the application.
