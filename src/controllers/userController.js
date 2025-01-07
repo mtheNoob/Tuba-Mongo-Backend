@@ -105,7 +105,9 @@ module.exports = function (app) {
             const userData = await User.findOne({emailOrUsername: email|| emailOrUsername})
             const hotelBookings = await Hotel.find({ email : emailOrUsername });
             const cabBookings = await Cab.find({email: emailOrUsername });
-            const flightBookings = await Flight.find({email: emailOrUsername})
+            // const flightBookings = await Flight.find({email: emailOrUsername})
+            const flightBookings = await Flight.find({ "passenger.email": emailOrUsername });
+
             const eVisaStampings = await eVisa.find({email: emailOrUsername})
             const visaData = await Visa.find({email: emailOrUsername})
             const TourData = await Tour.find({email: emailOrUsername})
