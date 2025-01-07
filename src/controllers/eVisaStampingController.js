@@ -17,7 +17,7 @@ module.exports = function (app) {
             name,
             email,
             contactNo,
-            visa_type,
+            visaType,
             purpose,
             passengers
         } = req.body;
