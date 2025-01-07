@@ -9,13 +9,13 @@ const visaSchema = new mongoose.Schema({
   passport_number: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
     trim: true
   },
   email: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
     lowercase: true,
     trim: true
   },
@@ -23,11 +23,6 @@ const visaSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true
-  },
-  visa_type: {
-    type: String,
-    enum: ['tourist', 'business', 'student', 'work'],
-    required: true
   },
   travel_date: {
     type: Date,
