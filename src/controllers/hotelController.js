@@ -47,11 +47,11 @@ module.exports = function (app) {
   });
 
   apiRoutes.post('/bookMyHotel', async (req, res) => {
-    const { email, contact, checkIn, checkOut, travellers, hotelPrice, numberOfDays } = req.body;
+    const { email, contact, checkIn, checkOut, travellers, hotelPrice, numberOfDays, selectedHotelRating, selectedHotelName } = req.body;
     try {
       const referenceNo = generateReferenceNumber()
       const rent = Number(numberOfDays * hotelPrice);
-      const booking = new Hotel({ email, contact, checkIn, checkOut, travellers, referenceNo, hotelPrice, rent });
+      const booking = new Hotel({ email, contact, checkIn, checkOut, travellers, referenceNo, hotelPrice, rent, selectedHotelRating, selectedHotelName });
       await booking.save();
 
       const userSubject = `Hotel Booking Confirmation`;
@@ -62,6 +62,7 @@ module.exports = function (app) {
 
                 Thank you for booking a Hotel with us. Here are your booking details:
 
+                Hotel Name: ${selectedHotelName}
                 Check In Date: ${checkIn}
                 Check Out Date: ${checkOut}
                 Guests: ${travellers}
@@ -78,7 +79,7 @@ module.exports = function (app) {
                 Hello,
 
                 A new Hotel Booking has been received. Here are the details:
-
+                Hotel Name: ${selectedHotelName}
                 Check In Date: ${checkIn}
                 Check Out Date: ${checkOut}
                 Guests: ${travellers}
