@@ -47,11 +47,11 @@ module.exports = function (app) {
   });
 
   apiRoutes.post('/bookMyHotel', async (req, res) => {
-    const { email, contact, checkIn, checkOut, travellers, hotelPrice, numberOfDays, selectedHotelRating, selectedHotelName } = req.body;
+    const { email, contact, checkIn, checkOut, travellers, hotelPrice, numberOfDays, selectedHotelRating, selectedHotelName, selectedHotelImage } = req.body;
     try {
       const referenceNo = generateReferenceNumber()
       const rent = Number(numberOfDays * hotelPrice);
-      const booking = new Hotel({ email, contact, checkIn, checkOut, travellers, referenceNo, hotelPrice, rent, selectedHotelRating, selectedHotelName });
+      const booking = new Hotel({ email, contact, checkIn, checkOut, travellers, referenceNo, hotelPrice, rent, selectedHotelRating, selectedHotelName, selectedHotelImage });
       await booking.save();
 
       const userSubject = `Hotel Booking Confirmation`;

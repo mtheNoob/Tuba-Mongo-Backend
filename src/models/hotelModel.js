@@ -30,6 +30,15 @@ const hotelSchema = new mongoose.Schema(
 
         rent: {
             type: String,
+        },
+        selectedHotelRating: {
+            type: String,
+        }, 
+        selectedHotelName: {
+            type: String,
+        }, 
+        selectedHotelImage: {
+            type: String,
         }
      
     },
