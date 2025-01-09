@@ -9,7 +9,7 @@ const visaRoutes = require('./controllers/visaController');
 const tourRoutes = require('./controllers/tourController');
 const eVisaRoutes = require('./controllers/eVisaStampingController');
 const hajjRoutes = require('./controllers/hajjVisaController');
-
+const contactUsRoutes = require('./controllers/contactUsController');
 
 const cors = require("cors");
 const bodyParser = require("body-parser")
@@ -48,4 +48,5 @@ visaRoutes(app)
 tourRoutes(app)
 hajjRoutes(app)
 eVisaRoutes(app)
+contactUsRoutes(app)
 module.exports = app;
