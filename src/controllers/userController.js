@@ -112,8 +112,11 @@ module.exports = function (app) {
             const visaData = await Visa.find({email: emailOrUsername})
             const TourData = await Tour.find({email: emailOrUsername})
 
+            const totalBookings = hotelBookings.length + cabBookings.length + flightBookings.length + eVisaStampings.length + visaData.length + TourData.length;
+
             res.status(200).send({
                 msg: 'User dashboard data fetched successfully.',
+                totalBookings,
                 data: {
                     userData,
                     hotelBookings,
