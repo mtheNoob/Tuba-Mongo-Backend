@@ -16,14 +16,14 @@ module.exports = function (app) {
     const apiRoutes = express.Router();
 
     apiRoutes.post('/register', async (req, res) => {
-        const { fullName, emailOrUsername, password } = req.body;
+        const { fullName, emailOrUsername, password, phone } = req.body;
         try {
             const existingUser = await User.findOne({ emailOrUsername });
             if (existingUser) {
                 return res.status(400).send({ msg: 'User already registered.' });
             }
 
-            const newUser = await User.create({ fullName, emailOrUsername, password });
+            const newUser = await User.create({ fullName, emailOrUsername, password, phone });
             res.status(201).send({ msg: 'User registered successfully.', user: newUser });
         } catch (err) {
             res.status(500).send({ msg: 'Error registering user.', error: err.message });
