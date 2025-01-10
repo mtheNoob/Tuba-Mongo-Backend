@@ -132,5 +132,37 @@ module.exports = function (app) {
             res.status(500).send({ msg: 'Error fetching dashboard data.', error: err.message && err});
         }
     });
+
+    apiRoutes.get('/admin-panel', async (req, res) => {
+        try {
+            const usersData = await User.find({});
+            const hotelBookings = await Hotel.find({});
+            const cabBookings = await Cab.find({});
+            const flightBookings = await Flight.find({});
+            const eVisaStampings = await eVisa.find({});
+            const visaData = await Visa.find({});
+            const TourData = await Tour.find({});
+    
+            const totalBookings = hotelBookings.length + cabBookings.length + flightBookings.length + eVisaStampings.length + visaData.length + TourData.length;
+    
+            res.status(200).send({
+                msg: 'Admin panel data fetched successfully.',
+                totalBookings,
+                data: {
+                    usersData,
+                    hotelBookings,
+                    cabBookings,
+                    flightBookings,
+                    eVisaStampings,
+                    visaData,
+                    TourData
+                },
+            });
+        } catch (err) {
+            console.error('Error fetching admin panel data:', err.message && err);
+            res.status(500).send({ msg: 'Error fetching admin panel data.', error: err.message && err });
+        }
+    });
+    
     app.use('/', apiRoutes);
 };
