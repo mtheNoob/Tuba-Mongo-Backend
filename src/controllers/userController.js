@@ -187,13 +187,15 @@ module.exports = function (app) {
                 ]
             });
     
+            // Log the user object to ensure it's being retrieved correctly
+            console.log('Retrieved User:', user);
+    
             // Check if user exists
             if (!user) {
                 return res.status(400).send({ msg: 'User Not Found.' });
             }
     
-            // Log passwords for debugging
-            console.log('Input Password:', password);
+            // Log the stored password for debugging
             console.log('Stored Password:', user.password);
     
             // Check if the password matches (assuming passwords are hashed)
