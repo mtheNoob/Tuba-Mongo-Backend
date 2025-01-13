@@ -9,6 +9,7 @@ const Flight = require('../models/flightModel')
 const eVisa = require('../models/eVisaModel')
 const Visa = require('../models/visaModel')
 const Tour = require('../models/tourModel')
+const { Op } = require('sequelize');
 
 
 module.exports = function (app) {
@@ -172,12 +173,31 @@ module.exports = function (app) {
 
     apiRoutes.post('/adminLogin', async (req, res) => {
         const { email, phone, password } = req.body;
+    
         try {
-            const user = await User.findOne({ emailOrUsername: email  || phone });
-            if (!user || user.password !== password) {
+
+            const user = await User.findOne({
+                where: {
+                    [Op.or]: [
+                        { emailOrUsername: email },
+                        { phone: phone }
+                    ]
+                }
+            });
+    
+            if (!user) {
                 return res.status(400).send({ msg: 'Invalid credentials.' });
             }
-            res.status(200).send({ msg: 'Login successful.', email: email });
+    
+            if (user.password !== password) {
+                return res.status(400).send({ msg: 'Invalid credentials.' });
+            }
+    
+            if (user.role !== 'admin') {
+                return res.status(403).send({ msg: 'You are not an admin.' });
+            }
+    
+            res.status(200).send({ msg: 'Login successful.', email: user.email });
         } catch (err) {
             res.status(500).send({ msg: 'Error logging in.', error: err.message });
         }
