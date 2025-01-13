@@ -173,7 +173,7 @@ module.exports = function (app) {
     apiRoutes.post('/adminLogin', async (req, res) => {
         const { email, phone, password } = req.body;
         try {
-            const user = await User.findOne({ email: emailOrUsername || phone });
+            const user = await User.findOne({ emailOrUsername: email  || phone });
             if (!user || user.password !== password) {
                 return res.status(400).send({ msg: 'Invalid credentials.' });
             }
