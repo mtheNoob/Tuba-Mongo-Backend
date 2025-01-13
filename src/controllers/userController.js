@@ -179,13 +179,18 @@ module.exports = function (app) {
         const { email, phone, password, role } = req.body;
     
         try {
-            // Find user based on emailOrUsername or phone
-            const user = await User.findOne({
-                $or: [
-                    { emailOrUsername: email },
-                    { phone: phone }
-                ]
-            });
+            // Define query condition based on input
+            let queryCondition = {};
+            if (email) {
+                queryCondition.emailOrUsername = email;
+            } else if (phone) {
+                queryCondition.phone = phone;
+            } else {
+                return res.status(400).send({ msg: 'Email or phone is required.' });
+            }
+    
+            // Find user based on the specific query condition
+            const user = await User.findOne(queryCondition);
     
             // Log the user object to ensure it's being retrieved correctly
             console.log('Retrieved User:', user);
