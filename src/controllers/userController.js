@@ -173,6 +173,8 @@ module.exports = function (app) {
     // });
     
 
+    const bcrypt = require('bcrypt');
+
     apiRoutes.post('/adminLogin', async (req, res) => {
         const { email, phone, password, role } = req.body;
     
@@ -190,7 +192,15 @@ module.exports = function (app) {
                 return res.status(400).send({ msg: 'User Not Found.' });
             }
     
+            // Log passwords for debugging
+            console.log('Input Password:', password);
+            console.log('Stored Password:', user.password);
+    
             // Check if the password matches (assuming passwords are hashed)
+            if (!password || !user.password) {
+                return res.status(400).send({ msg: 'Password data missing.' });
+            }
+    
             const isMatch = await bcrypt.compare(password, user.password);
             if (!isMatch) {
                 return res.status(400).send({ msg: 'Invalid Password.' });
@@ -207,6 +217,7 @@ module.exports = function (app) {
             res.status(500).send({ msg: 'Error logging in.', error: err.message });
         }
     });
+    
     
 
     apiRoutes.get('/admin-panel', async (req, res) => {
