@@ -10,6 +10,7 @@ const eVisa = require('../models/eVisaModel')
 const Visa = require('../models/visaModel')
 const Tour = require('../models/tourModel');
 const { error } = require('console');
+const bcrypt = require('bcrypt');
 
 
 module.exports = function (app) {
@@ -137,6 +138,41 @@ module.exports = function (app) {
         }
     });
 
+    // apiRoutes.post('/adminLogin', async (req, res) => {
+    //     const { email, phone, password, role } = req.body;
+    
+    //     try {
+    //         // Find user based on emailOrUsername or phone
+    //         const user = await User.findOne({
+    //             $or: [
+    //                 { emailOrUsername: email },
+    //                 { phone: phone }
+    //             ]
+    //         });
+    
+    //         // Check if user exists
+    //         if (!user) {
+    //             return res.status(400).send({ msg: 'User Not Found.' });
+    //         }
+    
+    //         // Check if the password matches (assuming password is not hashed)
+    //         if (user.password !== password) {
+    //             return res.status(400).send({ msg: 'Invalid Password.' });
+    //         }
+    
+    //         // Check if the role matches and if the user is an admin
+    //         if (user.role !== 'admin' || role !== 'admin') {
+    //             return res.status(403).send({ msg: 'You are not an admin.' });
+    //         }
+    
+    //         // Login successful
+    //         res.status(200).send({ msg: 'Login successful.', emailOrUsername: user.emailOrUsername });
+    //     } catch (err) {
+    //         res.status(500).send({ msg: 'Error logging in.', error: err.message, err });
+    //     }
+    // });
+    
+
     apiRoutes.post('/adminLogin', async (req, res) => {
         const { email, phone, password, role } = req.body;
     
@@ -154,8 +190,9 @@ module.exports = function (app) {
                 return res.status(400).send({ msg: 'User Not Found.' });
             }
     
-            // Check if the password matches (assuming password is not hashed)
-            if (user.password !== password) {
+            // Check if the password matches (assuming passwords are hashed)
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) {
                 return res.status(400).send({ msg: 'Invalid Password.' });
             }
     
@@ -167,10 +204,11 @@ module.exports = function (app) {
             // Login successful
             res.status(200).send({ msg: 'Login successful.', emailOrUsername: user.emailOrUsername });
         } catch (err) {
-            res.status(500).send({ msg: 'Error logging in.', error: err.message, err });
+            res.status(500).send({ msg: 'Error logging in.', error: err.message });
         }
     });
     
+
     apiRoutes.get('/admin-panel', async (req, res) => {
         try {
             const usersData = await User.find({});
