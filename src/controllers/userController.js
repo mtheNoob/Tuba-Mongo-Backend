@@ -171,40 +171,41 @@ module.exports = function (app) {
     });
 
 
+
     apiRoutes.post('/adminLogin', async (req, res) => {
-        const { email, phone, password } = req.body;
-    
-        try {
-            // Find user based on email or phone
-            const user = await User.findOne({
-                $or: [
-                    { email: email },
-                    { phone: phone }
-                ]
-            });
-    
-            // Check if user exists
-            if (!user) {
-                return res.status(400).send({ msg: 'Invalid credentials.' });
-            }
-    
-            // Check if the password matches
-            if (user.password !== password) {
-                return res.status(400).send({ msg: 'Invalid credentials.' });
-            }
-    
-            // Check if the user is an admin
-            if (user.role !== 'admin') {
-                return res.status(403).send({ msg: 'You are not an admin.' });
-            }
-    
-            // Login successful
-            res.status(200).send({ msg: 'Login successful.', email: user.email });
-        } catch (err) {
-            res.status(500).send({ msg: 'Error logging in.', error: err.message });
+    const { email, phone, password } = req.body;
+
+    try {
+        // Find user based on emailOrUsername or phone
+        const user = await User.findOne({
+            $or: [
+                { emailOrUsername: email },
+                { phone: phone }
+            ]
+        });
+
+        // Check if user exists
+        if (!user) {
+            return res.status(400).send({ msg: 'Invalid credentials.' });
         }
-    });
-    
+
+        // Check if the password matches
+        if (user.password !== password) {
+            return res.status(400).send({ msg: 'Invalid credentials.' });
+        }
+
+        // Check if the user is an admin
+        if (user.role !== 'admin') {
+            return res.status(403).send({ msg: 'You are not an admin.' });
+        }
+
+        // Login successful
+        res.status(200).send({ msg: 'Login successful.', emailOrUsername: user.emailOrUsername });
+    } catch (err) {
+        res.status(500).send({ msg: 'Error logging in.', error: err.message });
+    }
+});
+
     
     app.use('/', apiRoutes);
 };
