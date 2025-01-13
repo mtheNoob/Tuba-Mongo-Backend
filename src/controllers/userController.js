@@ -9,7 +9,6 @@ const Flight = require('../models/flightModel')
 const eVisa = require('../models/eVisaModel')
 const Visa = require('../models/visaModel')
 const Tour = require('../models/tourModel')
-const { Op } = require('sequelize');
 
 
 module.exports = function (app) {
@@ -171,7 +170,7 @@ module.exports = function (app) {
         }
     });
 
-    
+
     apiRoutes.post('/adminLogin', async (req, res) => {
         const { email, phone, password } = req.body;
     
