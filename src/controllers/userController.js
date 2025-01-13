@@ -105,14 +105,17 @@ module.exports = function (app) {
             const userData = await User.findOne({emailOrUsername: email|| emailOrUsername})
             const hotelBookings = await Hotel.find({ email : emailOrUsername });
             const cabBookings = await Cab.find({email: emailOrUsername });
-            // const flightBookings = await Flight.find({email: emailOrUsername})
             const flightBookings = await Flight.find({ "passenger.email": emailOrUsername });
-
             const eVisaStampings = await eVisa.find({email: emailOrUsername})
             const visaData = await Visa.find({email: emailOrUsername})
             const TourData = await Tour.find({email: emailOrUsername})
 
-            const totalBookings = hotelBookings.length + cabBookings.length + flightBookings.length + eVisaStampings.length + visaData.length + TourData.length;
+            const totalBookings = hotelBookings.length
+             + cabBookings.length 
+             + flightBookings.length 
+             + eVisaStampings.length 
+             + visaData.length 
+             + TourData.length;
 
             res.status(200).send({
                 msg: 'User dashboard data fetched successfully.',
@@ -143,7 +146,10 @@ module.exports = function (app) {
             const visaData = await Visa.find({});
             const TourData = await Tour.find({});
     
-            const totalBookings = hotelBookings.length + cabBookings.length + flightBookings.length + eVisaStampings.length + visaData.length + TourData.length;
+            const totalBookings = hotelBookings.length + 
+            cabBookings.length + flightBookings.length + 
+            eVisaStampings.length + visaData.length + 
+            TourData.length;
     
             res.status(200).send({
                 msg: 'Admin panel data fetched successfully.',
@@ -161,6 +167,19 @@ module.exports = function (app) {
         } catch (err) {
             console.error('Error fetching admin panel data:', err.message && err);
             res.status(500).send({ msg: 'Error fetching admin panel data.', error: err.message && err });
+        }
+    });
+
+    apiRoutes.post('/adminLogin', async (req, res) => {
+        const { email, phone, password } = req.body;
+        try {
+            const user = await User.findOne({ email: emailOrUsername || phone });
+            if (!user || user.password !== password) {
+                return res.status(400).send({ msg: 'Invalid credentials.' });
+            }
+            res.status(200).send({ msg: 'Login successful.', email: email });
+        } catch (err) {
+            res.status(500).send({ msg: 'Error logging in.', error: err.message });
         }
     });
     
