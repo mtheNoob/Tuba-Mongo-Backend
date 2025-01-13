@@ -196,6 +196,54 @@ apiRoutes.post("/autosuggest", async (req, res) => {
   }
 });
 
+// apiRoutes.post('/bookFlight', async (req, res) => {
+//   try {
+//       const { flight, passenger, journey } = req.body;
+
+//       if (!flight || !passenger || !journey) {
+//           return res.status(400).json({ message: 'Flight, passenger, and journey details are required.' });
+//       }
+
+//       const newFlight = new Flight({
+//           flight: {
+//               airline: flight.airline,
+//               departure_airport: flight.departure_airport,
+//               arrival_airport: flight.arrival_airport,
+//               departure_time: new Date(flight.departure_time),
+//               arrival_time: new Date(flight.arrival_time),
+//               duration: flight.duration,
+//               fare: flight.fare,
+//               image_link: flight.image_link,
+//               total_price: flight.total_price,
+//               currency: flight.currency,
+//               type: flight.type,
+//               travel_class: flight.travel_class,
+//           },
+//           passenger: {
+//               name: passenger.name,
+//               email: passenger.email,
+//               phone: passenger.phone,
+//               totalPassengers: passenger.totalPassengers,
+//           },
+//           journey: {
+//               from: journey.from,
+//               to: journey.to,
+//               date: new Date(journey.date),
+//           },
+//       });
+
+//       const savedFlight = await newFlight.save();
+
+//       return res.status(201).json({
+//           message: 'Flight data saved successfully!',
+//           flight: savedFlight,
+//       });
+//   } catch (error) {
+//       console.error('Error saving flight data:', error);
+//       return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+//   }
+// });
+
 apiRoutes.post('/bookFlight', async (req, res) => {
   try {
       const { flight, passenger, journey } = req.body;
@@ -223,7 +271,15 @@ apiRoutes.post('/bookFlight', async (req, res) => {
               name: passenger.name,
               email: passenger.email,
               phone: passenger.phone,
+              passportNumber: passenger.passportNumber,
               totalPassengers: passenger.totalPassengers,
+              travelInsurance: passenger.travelInsurance,
+              airportPickup: passenger.airportPickup,
+              additionalPassengers: passenger.additionalPassengers.map(additionalPassenger => ({
+                  name: additionalPassenger.name,
+                  dob: new Date(additionalPassenger.dob),
+                  passportNumber: additionalPassenger.passportNumber
+              })),
           },
           journey: {
               from: journey.from,
@@ -243,6 +299,7 @@ apiRoutes.post('/bookFlight', async (req, res) => {
       return res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 });
+
 
 apiRoutes.get('/getBookingData', async (req, res) => {
   try {
