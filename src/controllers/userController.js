@@ -192,24 +192,13 @@ module.exports = function (app) {
             // Find user based on the specific query condition
             const user = await User.findOne(queryCondition);
     
-            // Log the user object to ensure it's being retrieved correctly
-            console.log('Retrieved User:', user);
-    
             // Check if user exists
             if (!user) {
                 return res.status(400).send({ msg: 'User Not Found.' });
             }
     
-            // Log the stored password for debugging
-            console.log('Stored Password:', user.password);
-    
-            // Check if the password matches (assuming passwords are hashed)
-            if (!password || !user.password) {
-                return res.status(400).send({ msg: 'Password data missing.' });
-            }
-    
-            const isMatch = await bcrypt.compare(password, user.password);
-            if (!isMatch) {
+            // Check if the password matches
+            if (user.password !== password) {
                 return res.status(400).send({ msg: 'Invalid Password.' });
             }
     
@@ -224,6 +213,7 @@ module.exports = function (app) {
             res.status(500).send({ msg: 'Error logging in.', error: err.message });
         }
     });
+    
     
     
 
