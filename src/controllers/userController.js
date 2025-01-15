@@ -111,7 +111,6 @@ module.exports = function (app) {
             const eVisaStampings = await eVisa.find({email: emailOrUsername})
             const visaData = await Visa.find({email: emailOrUsername})
             const TourData = await Tour.find({email: emailOrUsername})
-
             const totalBookings = hotelBookings.length
              + cabBookings.length 
              + flightBookings.length 
@@ -129,7 +128,7 @@ module.exports = function (app) {
                     flightBookings,
                     eVisaStampings,
                     visaData,
-                    TourData
+                    TourData,
                 },
             });
         } catch (err) {
@@ -172,9 +171,6 @@ module.exports = function (app) {
     //     }
     // });
     
-
-    const bcrypt = require('bcrypt');
-
     apiRoutes.post('/adminLogin', async (req, res) => {
         const { email, phone, password, role } = req.body;
     
@@ -214,9 +210,6 @@ module.exports = function (app) {
         }
     });
     
-    
-    
-
     apiRoutes.get('/admin-panel', async (req, res) => {
         try {
             const usersData = await User.find({});
@@ -226,7 +219,8 @@ module.exports = function (app) {
             const eVisaStampings = await eVisa.find({});
             const visaData = await Visa.find({});
             const TourData = await Tour.find({});
-    
+            const AllVisaData = [...eVisaStampings, ...visaData];
+
             const totalBookings = hotelBookings.length + 
             cabBookings.length + flightBookings.length + 
             eVisaStampings.length + visaData.length + 
@@ -242,7 +236,8 @@ module.exports = function (app) {
                     flightBookings,
                     eVisaStampings,
                     visaData,
-                    TourData
+                    TourData,
+                    AllVisaData
                 },
             });
         } catch (err) {
@@ -250,8 +245,6 @@ module.exports = function (app) {
             res.status(500).send({ msg: 'Error fetching admin panel data.', error: err.message && err });
         }
     });
-
-
-    
+ 
     app.use('/', apiRoutes);
 };
