@@ -10,6 +10,8 @@ const eVisa = require('../models/eVisaModel')
 const Visa = require('../models/visaModel')
 const Hajj = require('../models/hajjModel');
 const Tour = require('../models/tourModel');
+const ContactUs = require('../models/contactUsModel');
+
 const { error } = require('console');
 const bcrypt = require('bcrypt');
 
@@ -224,6 +226,7 @@ module.exports = function (app) {
             const visaData = await Visa.find({});
             const TourData = await Tour.find({});
             const HajjData = await Hajj.find({})
+            const ContactUsData = await ContactUs.find({});
             const AllVisaData = [...eVisaStampings, ...HajjData];
 
             const totalBookings = hotelBookings.length + 
@@ -242,7 +245,8 @@ module.exports = function (app) {
                     eVisaStampings,
                     visaData,
                     TourData,
-                    AllVisaData
+                    AllVisaData,
+                    ContactUsData
                 },
             });
         } catch (err) {
