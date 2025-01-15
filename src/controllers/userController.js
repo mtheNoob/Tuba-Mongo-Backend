@@ -8,6 +8,7 @@ const Hotel = require('../models/hotelModel');
 const Flight = require('../models/flightModel')
 const eVisa = require('../models/eVisaModel')
 const Visa = require('../models/visaModel')
+const Hajj = require('../models/hajjModel');
 const Tour = require('../models/tourModel');
 const { error } = require('console');
 const bcrypt = require('bcrypt');
@@ -111,12 +112,14 @@ module.exports = function (app) {
             const eVisaStampings = await eVisa.find({email: emailOrUsername})
             const visaData = await Visa.find({email: emailOrUsername})
             const TourData = await Tour.find({email: emailOrUsername})
+            const HajjData = await Hajj.find({email: emailOrUsername})
             const totalBookings = hotelBookings.length
              + cabBookings.length 
              + flightBookings.length 
              + eVisaStampings.length 
              + visaData.length 
-             + TourData.length;
+             + TourData.length
+             + HajjData.length;
 
             res.status(200).send({
                 msg: 'User dashboard data fetched successfully.',
@@ -129,6 +132,7 @@ module.exports = function (app) {
                     eVisaStampings,
                     visaData,
                     TourData,
+                    HajjData
                 },
             });
         } catch (err) {
@@ -219,12 +223,13 @@ module.exports = function (app) {
             const eVisaStampings = await eVisa.find({});
             const visaData = await Visa.find({});
             const TourData = await Tour.find({});
-            const AllVisaData = [...eVisaStampings, ...visaData];
+            const HajjData = await Hajj.find({})
+            const AllVisaData = [...eVisaStampings, ...HajjData];
 
             const totalBookings = hotelBookings.length + 
             cabBookings.length + flightBookings.length + 
             eVisaStampings.length + visaData.length + 
-            TourData.length;
+            TourData.length + HajjData.length;
     
             res.status(200).send({
                 msg: 'Admin panel data fetched successfully.',
