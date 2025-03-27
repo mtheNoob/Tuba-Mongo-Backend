@@ -96,7 +96,7 @@ const express = require('express');
 const Cab = require('../models/cabModel');
 const sendEmail = require('../config/mailer');
 const sendSMS = require("../config/sms_sender"); 
-const sendTelegramNotification  = require('../config/telegramNotifier');
+const { sendTelegramNotification } = require('../config/telegramNotifier');
 
 function generateReferenceNumber() {
     const timestamp = Date.now(); 
