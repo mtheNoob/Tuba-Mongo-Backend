@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '7749631476:AAF0lWWSiVZa2CWzpViRpMFwzZ1X2bS44TU';
 // Either set TELEGRAM_CHAT_ID as an environment variable or hardcode the username with quotes.
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '@The_noobmzp';
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '5349528013';
 
 /**
  * Sends a message to Telegram using the Bot API.
