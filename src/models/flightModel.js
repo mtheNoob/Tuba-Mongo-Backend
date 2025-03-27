@@ -67,7 +67,7 @@ const flightSchema = new mongoose.Schema(
             },
             passportNumber: {
                 type: String,
-                required: true,
+                required: false,
             },
             totalPassengers: {
                 type: Number,
@@ -89,11 +89,11 @@ const flightSchema = new mongoose.Schema(
                     },
                     dob: {
                         type: Date,
-                        required: true,
+                        required: false,
                     },
                     passportNumber: {
                         type: String,
-                        required: true,
+                        required: false,
                     },
                 }
             ]
